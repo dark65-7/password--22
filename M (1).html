@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Messaging System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .chat {
+            display: block;
+        }
+        .chat .messages {
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #f4f4f9;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .chat input[type="text"], .chat input[type="file"] {
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .chat button {
+            padding: 10px;
+            background-color: #0288d1;
+            color: white;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Chat Section -->
+        <div class="chat">
+            <h2>Chat Room</h2>
+            <div class="messages" id="messages"></div>
+            <input type="text" id="messageInput" placeholder="Type a message..." />
+            <input type="file" id="imageInput" />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to send messages and images
+        function sendMessage() {
+            let message = document.getElementById("messageInput").value;
+            let image = document.getElementById("imageInput").files[0];
+
+            let messagesDiv = document.getElementById("messages");
+            let msgDiv = document.createElement("div");
+            msgDiv.classList.add("message");
+
+            // Adding message text
+            msgDiv.innerHTML = `<strong>User:</strong> ${message}<br>`;
+
+            if (image) {
+                // Reading the image and displaying it
+                let reader = new FileReader();
+                reader.onloadend = function() {
+                    msgDiv.innerHTML += `<img src="${reader.result}" width="100" />`;
+                    messagesDiv.appendChild(msgDiv);
+                };
+                reader.readAsDataURL(image);
+            } else {
+                messagesDiv.appendChild(msgDiv);
+            }
+
+            // Clear input fields
+            document.getElementById("messageInput").value = "";
+            document.getElementById("imageInput").value = "";
+        }
+    </script>
+</body>
+</html>
